@@ -1,0 +1,29 @@
+//在1024*1024*1024的位置开始写进去hello五个字符：
+#include <stdio.h>  
+#include <unistd.h>  
+#include <sys/types.h>
+#include <sys/stat.h>   
+#include <fcntl.h>      
+#include <stdlib.h>     
+ 
+int main(){
+ 
+   int fd;
+   umask(0);
+   fd=open("hole.txt",O_WRONLY|O_CREAT,0644);
+   if(fd==-1){
+      ERR_EXIT("open error");
+   }
+   
+   int ret =lseek(fd,1024*1024*1024,SEEK_CUR);
+   if(ret==-1){
+      ERR_EXIT("lseek error");
+   }
+   
+   write(fd,"hello",5);
+ 
+   close(fd);
+ 
+   return 0;
+}
+
